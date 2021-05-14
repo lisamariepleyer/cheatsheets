@@ -1,0 +1,36 @@
+make.args <- function (x) {
+  return ( strsplit (x, split = " " ) [[1]] )
+}
+# args <- make.args ("Rscript /dir/to/script/test.R -in seqs.fa -out seqs_qualityreport.pdf -threshold 10")
+
+startupvol.switch <- function (x) {
+  assign ( deparse ( substitute (x) ), gsub ( "groups", "Volumes", x ), env = .GlobalEnv)
+}
+
+# startupvol.switch(link)
+
+find.nonlist.in.list <- function (x) {
+  if ( class (x) == "list" ) {
+    lapply ( x, find.nonlist.in.list )
+  } else if ( class (x) != "list" ) {
+    TRUE
+  } else {
+    NULL
+  }
+}
+
+list.nonlist.names <- function (x) {
+  return ( strsplit ( names ( unlist ( lapply ( x, find.nonlist.in.list ))), split = ".", fixed = TRUE ))
+}
+
+# list
+#test <- list ( A = list ( AA = c(1,2),
+#                          AB = c(2,3)),
+#               B = list ( BA = c(3,4),
+#                          BB = c(4,5)))
+
+#my.vectors <- list.nonlist.names (test)
+#sapply ( seq_along ( my.vectors ), function (i) { paste ( c(my.vectors [[i]] [1], my.vectors [[i]] [2], test [[ my.vectors [[i]] ]]), collapse = "_" )})
+#[1] "A_AA_1_2" "A_AB_2_3" "B_BA_3_4" "B_BB_4_5"
+#sapply ( seq_along ( my.vectors ), function (i) { sum ( test [[ my.vectors [[i]] ]])})
+#[1] 3 5 7 9
