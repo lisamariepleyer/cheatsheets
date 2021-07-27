@@ -1,3 +1,46 @@
+library(data.table)
+
+object.size.better <- function (x) {
+  
+  x <- as.integer(object.size(x))
+  options(scipen = 999)
+  
+  if (nchar(x) < 4) { 
+    so <- "b"
+  } else if (nchar(x) < 7) {
+    so <- "Kb"
+    x <- round(x/1000, 1)
+  } else if (nchar(x) < 10) {
+    so <- "Mb"
+    x <- round(x/1000000,1)
+  } else if (nchar(x) < 13) {
+    so <- "Gb"
+    x <- round(x/1000000000,1)
+  } else {
+    so <- "Tb"
+    x <- round(x/1000000000000,1)
+  }
+
+  print (paste (x, so))
+  options(scipen = 0)
+  
+}
+# object.size(dt)
+# 13500000
+# object.size.better(dt)
+# 13.5 Mb
+
+ifstructure <- function() {
+  cat("if (x==this) { \n    #this \n} else if (x==that) { \n    #that \n} else { \n    #well \n}")
+}
+# ifstructure()
+
+key.for.overlaps <- function (dt) {
+  setkey (dt, chr, strand, start, end)
+}
+# key.for.overlaps(dt)
+# foverlaps(dt, dt)
+
 make.args <- function (x) {
   return ( strsplit (x, split = " " ) [[1]] )
 }
