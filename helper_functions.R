@@ -2,7 +2,12 @@ library(data.table)
 
 object.size.better <- function (x) {
   
-  x <- as.integer(object.size(x))
+  if ( is.character(x)==T | is.numeric(x)==T | is.integer(x)==T ) {
+    x <- as.numeric(x)
+  } else {
+    x <- as.integer(object.size(x))
+  }
+  
   options(scipen = 999)
   
   if (nchar(x) < 4) { 
@@ -77,3 +82,23 @@ list.nonlist.names <- function (x) {
 #[1] "A_AA_1_2" "A_AB_2_3" "B_BA_3_4" "B_BB_4_5"
 #sapply ( seq_along ( my.vectors ), function (i) { sum ( test [[ my.vectors [[i]] ]])})
 #[1] 3 5 7 9
+
+number.with.separator <- function (x) {
+  
+  if ( is.character(x)==T | is.numeric(x)==T | is.integer(x)==T ) {
+    x <- as.numeric(x)
+  } else {
+    x <- as.integer(object.size(x))
+  }
+  
+  options(scipen = 999)
+  
+  x.decimal <- nchar(strsplit(as.character(x), split = "\\.")[[1]][2])
+  x.decimal <- ifelse(is.na(x.decimal), 0, x.decimal)
+  
+  x <- format( x, big.mark="'", nsmall = x.decimal )
+  
+  print (x)
+  options(scipen = 0)
+  
+}
